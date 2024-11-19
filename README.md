@@ -1,7 +1,7 @@
 # csci4271-proj2
 - Let url be the path to access 443
-"enter" means putting the string in the search bar in web browser, 
-lines without "enter" is input in terminal
+- "enter" means putting the string in the search bar in web browser
+- lines without "enter" is input in terminal
 
 Running the program:
 - git clone...
